@@ -1,39 +1,38 @@
 -- =====黑名单=====
-if game.Players.LocalPlayer.Name == mmnnn185 or game.Players.LocalPlayer.Name == mmnnn958 or game.Players.LocalPlayer.Name ==insano_waza6274 then
-    game.Players.LocalPlayerKick(您被脚本作者禁止使用了 如果想使用 请您向脚本作者问答)
+if game.Players.LocalPlayer.Name == "mmnnn185" or game.Players.LocalPlayer.Name == "mmnnn958" or game.Players.LocalPlayer.Name =="insano_waza6274" then
+    game.Players.LocalPlayer:Kick("您被脚本作者禁止使用了 如果想使用 请您向脚本作者询问")
 end
 
 -- =====本地卡密验证=====
-local Key = "GoodSolo1"  -- 直接赋值为正确卡密，覆盖默认的"错误卡密"
--- 正确卡密
-local correctKey = GoodSolo1
+local Key = "GoodSolo1"  -- 直接赋值为正确卡密
+local correctKey = "GoodSolo1"
 
 -- 去空格
-local cleanedCorrectKey = correctKeygsub(%s+, )
-local cleanedKey = Keygsub(%s+, )
+local cleanedCorrectKey = correctKey:gsub("%s+", "")
+local cleanedKey = Key:gsub("%s+", "")
 
 -- 验证错误 → 踢出
 if cleanedKey ~= cleanedCorrectKey then    
-    gameGetService(Players).LocalPlayerKick(Solo1👿Player👿)
+    game:GetService("Players").LocalPlayer:Kick("Solo1👿Player👿")
 end
 
 -- =====Nolsaken加载动画=====
-local Players = gameGetService(Players)
-local RunService = gameGetService(RunService)
-local TweenService = gameGetService(TweenService)
-local CoreGui = gameGetService(StarterGui)
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("StarterGui")
 
 -- 创建主屏幕GUI
 local player = Players.LocalPlayer
-local gui = Instance.new(ScreenGui)
-gui.Name = WenDing_Full_Loader_WhiteParticles
+local gui = Instance.new("ScreenGui")
+gui.Name = "WenDing_Full_Loader_WhiteParticles"
 gui.ResetOnSpawn = false
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-gui.Parent = playerWaitForChild(PlayerGui)
+gui.Parent = player:WaitForChild("PlayerGui")
 
 -- =====黑色背景幕布与白色背景粒子=====
-local blackBackground = Instance.new(Frame)
-blackBackground.Name = BlackBackground
+local blackBackground = Instance.new("Frame")
+blackBackground.Name = "BlackBackground"
 blackBackground.Size = UDim2.new(1, 0, 1, 0)
 blackBackground.BackgroundColor3 = Color3.new(0, 0, 0)
 blackBackground.BackgroundTransparency = 1
@@ -41,8 +40,8 @@ blackBackground.ZIndex = 1
 blackBackground.Parent = gui
 
 -- 白色粒子容器
-local bgParticleContainer = Instance.new(Frame)
-bgParticleContainer.Name = WhiteParticleContainer
+local bgParticleContainer = Instance.new("Frame")
+bgParticleContainer.Name = "WhiteParticleContainer"
 bgParticleContainer.Size = UDim2.new(1, 0, 1, 0)
 bgParticleContainer.BackgroundTransparency = 1
 bgParticleContainer.ClipsDescendants = true
@@ -54,8 +53,8 @@ local whiteParticles = {}
 local whiteParticleCount = 40 -- 白色粒子数量
 
 for i = 1, whiteParticleCount do
-    local particle = Instance.new(Frame)
-    particle.Name = WhiteParticle_..i
+    local particle = Instance.new("Frame")
+    particle.Name = "WhiteParticle_"..i
     particle.AnchorPoint = Vector2.new(0.5, 0.5)
     particle.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- 纯白色
     particle.Size = UDim2.new(0, math.random(2, 5), 0, math.random(2, 5)) -- 小尺寸
@@ -64,28 +63,28 @@ for i = 1, whiteParticleCount do
     particle.ZIndex = 2
     particle.Parent = bgParticleContainer
     
-    local particleCorner = Instance.new(UICorner)
+    local particleCorner = Instance.new("UICorner")
     particleCorner.CornerRadius = UDim.new(1, 0)
     particleCorner.Parent = particle
     
     whiteParticles[i] = {
         element = particle,
-        xSpeed = (math.random() - 0.5)  0.15, -- 较慢速度
-        ySpeed = (math.random() - 0.5)  0.15,
-        scale = 0.5 + math.random()  0.5,
-        alpha = 0.2 + math.random()  0.3 -- 半透明效果
+        xSpeed = (math.random() - 0.5) * 0.15, -- 补充乘法运算符
+        ySpeed = (math.random() - 0.5) * 0.15,
+        scale = 0.5 + math.random() * 0.5,
+        alpha = 0.2 + math.random() * 0.3 -- 半透明效果
     }
 end
 
 -- =====Nolsaken字幕动画=====
-local SubtitleText = Instance.new(TextLabel)
-SubtitleText.Name = NOLText
+local SubtitleText = Instance.new("TextLabel")
+SubtitleText.Name = "NOLText"
 SubtitleText.AnchorPoint = Vector2.new(0.5, 0.5)
 SubtitleText.Position = UDim2.new(0.5, 0, 0.5, 0)
 SubtitleText.Size = UDim2.new(0, 0, 0, 80)
 SubtitleText.BackgroundTransparency = 1
 SubtitleText.Font = Enum.Font.GothamBold
-SubtitleText.Text = Nolsaken PRESENTS
+SubtitleText.Text = "Nolsaken PRESENTS"
 SubtitleText.TextColor3 = Color3.fromRGB(255, 255, 255) -- 白色文字
 SubtitleText.TextSize = 36
 SubtitleText.TextTransparency = 1
@@ -94,8 +93,8 @@ SubtitleText.ZIndex = 10
 SubtitleText.Parent = gui
 
 -- =====主加载UI=====
-local container = Instance.new(Frame)
-container.Name = MainContainer
+local container = Instance.new("Frame")
+container.Name = "MainContainer"
 container.AnchorPoint = Vector2.new(0.5, 0.5)
 container.BackgroundColor3 = Color3.fromRGB(30, 20, 50)
 container.BackgroundTransparency = 1
@@ -105,12 +104,12 @@ container.ZIndex = 20
 container.Parent = gui
 
 -- 圆角效果
-local uiCorner = Instance.new(UICorner)
+local uiCorner = Instance.new("UICorner")
 uiCorner.CornerRadius = UDim.new(0.08, 0)
 uiCorner.Parent = container
 
 -- 边框发光效果
-local uiStroke = Instance.new(UIStroke)
+local uiStroke = Instance.new("UIStroke")
 uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 uiStroke.Color = Color3.fromRGB(120, 80, 180)
 uiStroke.Transparency = 1
@@ -118,14 +117,14 @@ uiStroke.Thickness = 2
 uiStroke.Parent = container
 
 -- 主标题
-local title = Instance.new(TextLabel)
-title.Name = Title
+local title = Instance.new("TextLabel")
+title.Name = "Title"
 title.AnchorPoint = Vector2.new(0.5, 0)
 title.BackgroundTransparency = 1
 title.Position = UDim2.new(0.5, 0, 0.1, 0)
 title.Size = UDim2.new(0.8, 0, 0, 60)
 title.Font = Enum.Font.SciFi
-title.Text = LightStar
+title.Text = "LightStar"
 title.TextColor3 = Color3.fromRGB(180, 140, 255)
 title.TextScaled = true
 title.TextSize = 28
@@ -137,8 +136,8 @@ title.ZIndex = 21
 title.Parent = container
 
 -- 标题下划线
-local underline = Instance.new(Frame)
-underline.Name = Underline
+local underline = Instance.new("Frame")
+underline.Name = "Underline"
 underline.AnchorPoint = Vector2.new(0.5, 0)
 underline.BackgroundColor3 = Color3.fromRGB(150, 100, 220)
 underline.BorderSizePixel = 0
@@ -148,8 +147,8 @@ underline.ZIndex = 21
 underline.Parent = container
 
 -- 前景粒子容器（彩色粒子）
-local particleContainer = Instance.new(Frame)
-particleContainer.Name = ParticleContainer
+local particleContainer = Instance.new("Frame")
+particleContainer.Name = "ParticleContainer"
 particleContainer.AnchorPoint = Vector2.new(0.5, 0.5)
 particleContainer.BackgroundTransparency = 1
 particleContainer.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -163,8 +162,8 @@ local particles = {}
 local particleCount = 18
 
 for i = 1, particleCount do
-    local particle = Instance.new(Frame)
-    particle.Name = Particle_..i
+    local particle = Instance.new("Frame")
+    particle.Name = "Particle_"..i
     particle.AnchorPoint = Vector2.new(0.5, 0.5)
     particle.BackgroundColor3 = Color3.fromRGB(
         math.random(160, 200),
@@ -177,22 +176,22 @@ for i = 1, particleCount do
     particle.ZIndex = 21
     particle.Parent = particleContainer
     
-    local particleCorner = Instance.new(UICorner)
+    local particleCorner = Instance.new("UICorner")
     particleCorner.CornerRadius = UDim.new(1, 0)
     particleCorner.Parent = particle
     
     particles[i] = {
         element = particle,
-        xSpeed = (math.random() - 0.5)  0.4,
-        ySpeed = (math.random() - 0.5)  0.4,
+        xSpeed = (math.random() - 0.5) * 0.4,
+        ySpeed = (math.random() - 0.5) * 0.4,
         scale = 0.5 + math.random(),
-        alpha = 0.3 + math.random()  0.7
+        alpha = 0.3 + math.random() * 0.7
     }
 end
 
 -- 加载进度条背景
-local progressBarBg = Instance.new(Frame)
-progressBarBg.Name = ProgressBarBg
+local progressBarBg = Instance.new("Frame")
+progressBarBg.Name = "ProgressBarBg"
 progressBarBg.AnchorPoint = Vector2.new(0.5, 0)
 progressBarBg.BackgroundColor3 = Color3.fromRGB(40, 30, 70)
 progressBarBg.BackgroundTransparency = 1
@@ -202,13 +201,13 @@ progressBarBg.Size = UDim2.new(0.7, 0, 0, 8)
 progressBarBg.ZIndex = 21
 progressBarBg.Parent = container
 
-local progressCorner = Instance.new(UICorner)
+local progressCorner = Instance.new("UICorner")
 progressCorner.CornerRadius = UDim.new(0.5, 0)
 progressCorner.Parent = progressBarBg
 
 -- 加载进度条填充
-local progressFill = Instance.new(Frame)
-progressFill.Name = ProgressFill
+local progressFill = Instance.new("Frame")
+progressFill.Name = "ProgressFill"
 progressFill.AnchorPoint = Vector2.new(0, 0.5)
 progressFill.BackgroundColor3 = Color3.fromRGB(160, 120, 255)
 progressFill.BorderSizePixel = 0
@@ -217,26 +216,26 @@ progressFill.Size = UDim2.new(0, 0, 1, 0)
 progressFill.ZIndex = 22
 progressFill.Parent = progressBarBg
 
-local fillCorner = Instance.new(UICorner)
+local fillCorner = Instance.new("UICorner")
 fillCorner.CornerRadius = UDim.new(0.5, 0)
 fillCorner.Parent = progressFill
 
 -- 进度条发光效果
-local fillGlow = Instance.new(UIStroke)
+local fillGlow = Instance.new("UIStroke")
 fillGlow.Color = Color3.fromRGB(200, 180, 255)
 fillGlow.Thickness = 1
 fillGlow.Transparency = 1
 fillGlow.Parent = progressFill
 
 -- 百分比文本
-local percentText = Instance.new(TextLabel)
-percentText.Name = PercentText
+local percentText = Instance.new("TextLabel")
+percentText.Name = "PercentText"
 percentText.AnchorPoint = Vector2.new(0.5, 0)
 percentText.BackgroundTransparency = 1
 percentText.Position = UDim2.new(0.5, 0, 0.88, 0)
 percentText.Size = UDim2.new(0, 200, 0, 30)
 percentText.Font = Enum.Font.SciFi
-percentText.Text = 0%
+percentText.Text = "0%"
 percentText.TextColor3 = Color3.fromRGB(200, 180, 255)
 percentText.TextSize = 18
 percentText.TextTransparency = 1
@@ -249,14 +248,14 @@ percentText.Parent = container
 local function updateWhiteParticles()
     for i, particle in ipairs(whiteParticles) do
         local currentPos = particle.element.Position
-        local newX = (currentPos.X.Scale + particle.xSpeed  0.016) % 1
-        local newY = (currentPos.Y.Scale + particle.ySpeed  0.016) % 1
+        local newX = (currentPos.X.Scale + particle.xSpeed * 0.016) % 1
+        local newY = (currentPos.Y.Scale + particle.ySpeed * 0.016) % 1
         
         particle.element.Position = UDim2.new(newX, 0, newY, 0)
         
         -- 添加轻微的闪烁效果
-        local flicker = math.sin(os.clock()  3 + i)  0.1
-        particle.element.BackgroundTransparency = 1 - (particle.alpha + flicker  0.1)
+        local flicker = math.sin(os.clock() * 3 + i) * 0.1
+        particle.element.BackgroundTransparency = 1 - (particle.alpha + flicker * 0.1)
     end
 end
 
@@ -264,15 +263,15 @@ end
 local function updateParticles()
     for i, particle in ipairs(particles) do
         local currentPos = particle.element.Position
-        local newX = (currentPos.X.Scale + particle.xSpeed  0.016) % 1
-        local newY = (currentPos.Y.Scale + particle.ySpeed  0.016) % 1
+        local newX = (currentPos.X.Scale + particle.xSpeed * 0.016) % 1
+        local newY = (currentPos.Y.Scale + particle.ySpeed * 0.016) % 1
         
         particle.element.Position = UDim2.new(newX, 0, newY, 0)
         
-        local scale = particle.scale + math.sin(os.clock()  2 + i)  0.1
-        particle.element.Size = UDim2.new(0, 6  scale, 0, 6  scale)
+        local scale = particle.scale + math.sin(os.clock() * 2 + i) * 0.1
+        particle.element.Size = UDim2.new(0, 6 * scale, 0, 6 * scale)
         
-        particle.element.BackgroundTransparency = 1 - particle.alpha  (0.7 + math.sin(os.clock()  3 + i)  0.3)
+        particle.element.BackgroundTransparency = 1 - particle.alpha * (0.7 + math.sin(os.clock() * 3 + i) * 0.3)
     end
 end
 
@@ -283,38 +282,38 @@ local function updateProgress()
     if loadingComplete then return end
     
     progress = progress + 0.003
-    if progress = 1 then
+    if progress >= 1 then -- 修正比较运算符
         progress = 1
         loadingComplete = true
     end
     
     progressFill.Size = UDim2.new(progress, 0, 1, 0)
-    percentText.Text = string.format(%d%%, math.floor(progress  100))
+    percentText.Text = string.format("%d%%", math.floor(progress * 100))
     
-    fillGlow.Transparency = 0.5 + math.abs(math.sin(os.clock()  5))  0.3
+    fillGlow.Transparency = 0.5 + math.abs(math.sin(os.clock() * 5)) * 0.3
 end
 
 -- Nolsaken字幕动画
 local function playNOLAnimation()
     -- 黑色背景淡入
-    TweenServiceCreate(
+    TweenService:Create(
         blackBackground,
         TweenInfo.new(1.2, Enum.EasingStyle.Quad),
         {
             BackgroundTransparency = 0.7
         }
-    )Play()
+    ):Play() -- 修正Tween调用格式
     
     -- 白色粒子淡入（更密集的出现）
     for i, particle in ipairs(whiteParticles) do
-        task.delay(i  0.05, function() -- 更快的出现节奏
-            TweenServiceCreate(
+        task.delay(i * 0.05, function() -- 更快的出现节奏
+            TweenService:Create(
                 particle.element,
                 TweenInfo.new(1.5, Enum.EasingStyle.Quad),
                 {
                     BackgroundTransparency = 1 - particle.alpha
                 }
-            )Play()
+            ):Play()
         end)
     end
     
@@ -322,7 +321,7 @@ local function playNOLAnimation()
     
     -- Nolsaken文字动画
     -- 文字宽度扩展
-    local widthTween = TweenServiceCreate(
+    local widthTween = TweenService:Create(
         SubtitleText,
         TweenInfo.new(0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
         {
@@ -331,7 +330,7 @@ local function playNOLAnimation()
     )
     
     -- 文字淡入
-    local fadeTween = TweenServiceCreate(
+    local fadeTween = TweenService:Create(
         SubtitleText,
         TweenInfo.new(0.8, Enum.EasingStyle.Quad),
         {
@@ -339,13 +338,13 @@ local function playNOLAnimation()
         }
     )
     
-    widthTweenPlay()
-    fadeTweenPlay()
+    widthTween:Play()
+    fadeTween:Play()
     
     task.wait(1.8)
     
     -- 文字淡出
-    local fadeOutTween = TweenServiceCreate(
+    local fadeOutTween = TweenService:Create(
         SubtitleText,
         TweenInfo.new(0.8, Enum.EasingStyle.Quad),
         {
@@ -354,7 +353,7 @@ local function playNOLAnimation()
     )
     
     -- 文字收缩
-    local shrinkTween = TweenServiceCreate(
+    local shrinkTween = TweenService:Create(
         SubtitleText,
         TweenInfo.new(0.8, Enum.EasingStyle.Back, Enum.EasingDirection.In),
         {
@@ -362,170 +361,170 @@ local function playNOLAnimation()
         }
     )
     
-    fadeOutTweenPlay()
-    shrinkTweenPlay()
+    fadeOutTween:Play()
+    shrinkTween:Play()
     
     task.wait(0.8)
     
     -- 主UI淡入
-    TweenServiceCreate(
+    TweenService:Create(
         container,
         TweenInfo.new(0.8, Enum.EasingStyle.Quad),
         {
             BackgroundTransparency = 0.2
         }
-    )Play()
+    ):Play()
     
     -- 边框发光淡入
-    TweenServiceCreate(
+    TweenService:Create(
         uiStroke,
         TweenInfo.new(1, Enum.EasingStyle.Quad),
         {
             Transparency = 0.3
         }
-    )Play()
+    ):Play()
     
     -- 标题淡入
-    TweenServiceCreate(
+    TweenService:Create(
         title,
         TweenInfo.new(1, Enum.EasingStyle.Quad),
         {
             TextTransparency = 0,
             TextStrokeTransparency = 0.6
         }
-    )Play()
+    ):Play()
     
     -- 下划线展开
-    TweenServiceCreate(
+    TweenService:Create(
         underline,
         TweenInfo.new(0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
         {
             Size = UDim2.new(0.5, 0, 0, 2)
         }
-    )Play()
+    ):Play()
     
     -- 进度条背景淡入
-    TweenServiceCreate(
+    TweenService:Create(
         progressBarBg,
         TweenInfo.new(0.8, Enum.EasingStyle.Quad),
         {
             BackgroundTransparency = 0
         }
-    )Play()
+    ):Play()
     
     -- 进度条发光淡入
-    TweenServiceCreate(
+    TweenService:Create(
         fillGlow,
         TweenInfo.new(1, Enum.EasingStyle.Quad),
         {
             Transparency = 0.7
         }
-    )Play()
+    ):Play()
     
     -- 百分比文本淡入
-    TweenServiceCreate(
+    TweenService:Create(
         percentText,
         TweenInfo.new(1, Enum.EasingStyle.Quad),
         {
             TextTransparency = 0
         }
-    )Play()
+    ):Play()
     
     -- 前景彩色粒子淡入
     for i, particle in ipairs(particles) do
-        task.delay(i  0.05, function()
-            TweenServiceCreate(
+        task.delay(i * 0.05, function()
+            TweenService:Create(
                 particle.element,
                 TweenInfo.new(0.8, Enum.EasingStyle.Quad),
                 {
                     BackgroundTransparency = 1 - particle.alpha
                 }
-            )Play()
+            ):Play()
         end)
     end
     
     -- 背景变暗
-    TweenServiceCreate(
+    TweenService:Create(
         blackBackground,
         TweenInfo.new(0.8, Enum.EasingStyle.Quad),
         {
             BackgroundTransparency = 0.85
         }
-    )Play()
+    ):Play()
 end
 
 -- 加载完成动画
 local function playCompleteAnimation()
     -- 标题变色
-    TweenServiceCreate(
+    TweenService:Create(
         title,
         TweenInfo.new(1, Enum.EasingStyle.Quad),
         {
             TextColor3 = Color3.fromRGB(220, 180, 255),
             TextStrokeColor3 = Color3.fromRGB(120, 80, 160)
         }
-    )Play()
+    ):Play()
     
     -- 进度条变色
-    TweenServiceCreate(
+    TweenService:Create(
         progressFill,
         TweenInfo.new(1, Enum.EasingStyle.Quad),
         {
             BackgroundColor3 = Color3.fromRGB(200, 160, 255)
         }
-    )Play()
+    ):Play()
     
     -- 前景彩色粒子加速并淡出
     for i, particle in ipairs(particles) do
-        particle.xSpeed = particle.xSpeed  3
-        particle.ySpeed = particle.ySpeed  3
+        particle.xSpeed = particle.xSpeed * 3
+        particle.ySpeed = particle.ySpeed * 3
         
-        TweenServiceCreate(
+        TweenService:Create(
             particle.element,
             TweenInfo.new(1, Enum.EasingStyle.Quad),
             {
                 BackgroundTransparency = 1
             }
-        )Play()
+        ):Play()
     end
     
     -- 白色背景粒子淡出
     for i, particle in ipairs(whiteParticles) do
-        TweenServiceCreate(
+        TweenService:Create(
             particle.element,
             TweenInfo.new(1.5, Enum.EasingStyle.Quad),
             {
                 BackgroundTransparency = 1
             }
-        )Play()
+        ):Play()
     end
     
     -- 移除Nolsaken文字
-    SubtitleTextDestroy()
+    SubtitleText:Destroy()
     
     task.wait(1.2)
     
     -- 主UI淡出
-    TweenServiceCreate(
+    TweenService:Create(
         container,
         TweenInfo.new(1, Enum.EasingStyle.Quad),
         {
             BackgroundTransparency = 1
         }
-    )Play()
+    ):Play()
     
     -- 背景淡出
-    TweenServiceCreate(
+    TweenService:Create(
         blackBackground,
         TweenInfo.new(1.5, Enum.EasingStyle.Quad),
         {
             BackgroundTransparency = 1
         }
-    )Play()
+    ):Play()
     
     -- 延迟后销毁GUI
     task.wait(1.5)
-    guiDestroy()
+    gui:Destroy()
 end
 
 -- =====主循环=====
@@ -534,7 +533,7 @@ playNOLAnimation()
 
 -- 主渲染循环
 local renderConnection
-renderConnection = RunService.RenderSteppedConnect(function(deltaTime)
+renderConnection = RunService.RenderStepped:Connect(function(deltaTime) -- 修正事件绑定
     updateWhiteParticles()
     updateParticles()
     updateProgress()
@@ -552,24 +551,24 @@ wait(1.5)
 
 -- =====游戏列表=====
 local GameList = {
-[6331902150] = loadstring(gameHttpGet('httpsraw.githubusercontent.comjavaKL666LightStarrefsheadsmainLightStar-Forsaken.lua'))(), --被遗弃Forsaken
-[7344582593] = loadstring(gameHttpGet('httpsraw.githubusercontent.comjavaKL666LightStarrefsheadsmainLightStar-DieOfDeath.lua'))(), --死亡之死DieOfDeath
-[5677613211] = loadstring(gameHttpGet('httpsraw.githubusercontent.comjavaKL666LightStarrefsheadsmainLightStar-EatTheWorld.lua'))() --吃掉世界EatTheworld
+    [6331902150] = loadstring(game:HttpGet('https://raw.githubusercontent.com/javaKL666/LightStar/refs/heads/main/LightStar-Forsaken.lua'))(), --被遗弃Forsaken
+    [7344582593] = loadstring(game:HttpGet('https://raw.githubusercontent.com/javaKL666/LightStar/refs/heads/main/LightStar-DieOfDeath.lua'))(), --死亡之死DieOfDeath
+    [5677613211] = loadstring(game:HttpGet('https://raw.githubusercontent.com/javaKL666/LightStar/refs/heads/main/LightStar-EatTheWorld.lua'))() --吃掉世界EatTheworld
 }
 _G.HoHoLoaded = true
-if getgenv().Key and GameListPre[game.GameId] ~= nil then
-	getgenv().messagebox = function()end
-	loadstring(GameListPre[tonumber(game.GameId)])()
+if getgenv().Key and GameList[game.GameId] ~= nil then -- 修正表名
+    getgenv().messagebox = function()end
+    loadstring(GameList[tonumber(game.GameId)])()
 elseif not getgenv().Key and GameList[game.GameId] ~= nil then
-	loadstring(GameList[tonumber(game.GameId)])()
+    loadstring(GameList[tonumber(game.GameId)])()
 else
     -- =====如果不在游戏列表里 就加载的就显示提示或加载备用脚本=====
-    CoreGuiSetCore(SendNotification, {
-    Title = LightStar-提示,
-    Text = 请你到支持的服务器执行💩游戏列表没有此游戏脚本☠️,
-    Duration = 10, 
-    Callback = Bindable,
-    Button1 =  ,
-    Button2 =  ,
-})
+    CoreGui:SetCore("SendNotification", {
+        Title = "LightStar-提示",
+        Text = "请你到支持的服务器执行💩游戏列表没有此游戏脚本☠️",
+        Duration = 10, 
+        Callback = Instance.new("BindableFunction"),
+        Button1 = "确定",
+        Button2 = "取消",
+    })
 end
