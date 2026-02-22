@@ -1,34 +1,46 @@
+-- ===== 修复版完整脚本（含调试+提示）=====
+-- 1. 等待LocalPlayer加载（避免过早执行报错）
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer or Players:WaitForChild("LocalPlayer", 10)
+if not LocalPlayer then
+    warn("LocalPlayer加载失败！")
+    return
+end
+
 -- =====黑名单=====
-if game.Players.LocalPlayer.Name == "mmnnn185" or game.Players.LocalPlayer.Name == "mmnnn958" or game.Players.LocalPlayer.Name =="insano_waza6274" then
-    game.Players.LocalPlayer:Kick("您被脚本作者禁止使用了 如果想使用 请您向脚本作者询问")
+local blacklist = {"mmnnn185", "mmnnn958", "insano_waza6274"}
+if table.find(blacklist, LocalPlayer.Name) then
+    LocalPlayer:Kick("您被脚本作者禁止使用了 如果想使用 请您向脚本作者询问")
+    return
 end
 
 -- =====本地卡密验证=====
-local Key = "GoodSolo1"  -- 直接赋值为正确卡密
+local Key = "GoodSolo1"  -- 可自行修改卡密
 local correctKey = "GoodSolo1"
 
--- 去空格
+-- 去空格处理
 local cleanedCorrectKey = correctKey:gsub("%s+", "")
 local cleanedKey = Key:gsub("%s+", "")
 
--- 验证错误 → 踢出
+-- 卡密验证失败则踢出
 if cleanedKey ~= cleanedCorrectKey then    
-    game:GetService("Players").LocalPlayer:Kick("Solo1👿Player👿")
+    LocalPlayer:Kick("Solo1👿Player👿")
+    return
 end
+warn("✅ 卡密验证成功！")
 
 -- =====Nolsaken加载动画=====
-local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
-local CoreGui = game:GetService("StarterGui")
+local StarterGui = game:GetService("StarterGui")
 
 -- 创建主屏幕GUI
-local player = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui", 10)
 local gui = Instance.new("ScreenGui")
 gui.Name = "WenDing_Full_Loader_WhiteParticles"
 gui.ResetOnSpawn = false
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-gui.Parent = player:WaitForChild("PlayerGui")
+gui.Parent = PlayerGui
 
 -- =====黑色背景幕布与白色背景粒子=====
 local blackBackground = Instance.new("Frame")
@@ -57,9 +69,9 @@ for i = 1, whiteParticleCount do
     particle.Name = "WhiteParticle_"..i
     particle.AnchorPoint = Vector2.new(0.5, 0.5)
     particle.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- 纯白色
-    particle.Size = UDim2.new(0, math.random(2, 5), 0, math.random(2, 5)) -- 小尺寸
+    particle.Size = UDim2.new(0, math.random(2, 5), 0, math.random(2, 5))
     particle.Position = UDim2.new(math.random(), 0, math.random(), 0)
-    particle.BackgroundTransparency = 1 -- 初始透明
+    particle.BackgroundTransparency = 1
     particle.ZIndex = 2
     particle.Parent = bgParticleContainer
     
@@ -69,10 +81,10 @@ for i = 1, whiteParticleCount do
     
     whiteParticles[i] = {
         element = particle,
-        xSpeed = (math.random() - 0.5) * 0.15, -- 补充乘法运算符
+        xSpeed = (math.random() - 0.5) * 0.15,
         ySpeed = (math.random() - 0.5) * 0.15,
         scale = 0.5 + math.random() * 0.5,
-        alpha = 0.2 + math.random() * 0.3 -- 半透明效果
+        alpha = 0.2 + math.random() * 0.3
     }
 end
 
@@ -85,7 +97,7 @@ SubtitleText.Size = UDim2.new(0, 0, 0, 80)
 SubtitleText.BackgroundTransparency = 1
 SubtitleText.Font = Enum.Font.GothamBold
 SubtitleText.Text = "Nolsaken PRESENTS"
-SubtitleText.TextColor3 = Color3.fromRGB(255, 255, 255) -- 白色文字
+SubtitleText.TextColor3 = Color3.fromRGB(255, 255, 255)
 SubtitleText.TextSize = 36
 SubtitleText.TextTransparency = 1
 SubtitleText.TextWrapped = true
@@ -253,7 +265,6 @@ local function updateWhiteParticles()
         
         particle.element.Position = UDim2.new(newX, 0, newY, 0)
         
-        -- 添加轻微的闪烁效果
         local flicker = math.sin(os.clock() * 3 + i) * 0.1
         particle.element.BackgroundTransparency = 1 - (particle.alpha + flicker * 0.1)
     end
@@ -282,7 +293,7 @@ local function updateProgress()
     if loadingComplete then return end
     
     progress = progress + 0.003
-    if progress >= 1 then -- 修正比较运算符
+    if progress >= 1 then
         progress = 1
         loadingComplete = true
     end
@@ -295,24 +306,21 @@ end
 
 -- Nolsaken字幕动画
 local function playNOLAnimation()
+    warn("🎬 开始播放加载动画！")
     -- 黑色背景淡入
     TweenService:Create(
         blackBackground,
         TweenInfo.new(1.2, Enum.EasingStyle.Quad),
-        {
-            BackgroundTransparency = 0.7
-        }
-    ):Play() -- 修正Tween调用格式
+        {BackgroundTransparency = 0.7}
+    ):Play()
     
-    -- 白色粒子淡入（更密集的出现）
+    -- 白色粒子淡入
     for i, particle in ipairs(whiteParticles) do
-        task.delay(i * 0.05, function() -- 更快的出现节奏
+        task.delay(i * 0.05, function()
             TweenService:Create(
                 particle.element,
                 TweenInfo.new(1.5, Enum.EasingStyle.Quad),
-                {
-                    BackgroundTransparency = 1 - particle.alpha
-                }
+                {BackgroundTransparency = 1 - particle.alpha}
             ):Play()
         end)
     end
@@ -320,22 +328,16 @@ local function playNOLAnimation()
     task.wait(0.8)
     
     -- Nolsaken文字动画
-    -- 文字宽度扩展
     local widthTween = TweenService:Create(
         SubtitleText,
         TweenInfo.new(0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
-        {
-            Size = UDim2.new(0, 300, 0, 80)
-        }
+        {Size = UDim2.new(0, 300, 0, 80)}
     )
     
-    -- 文字淡入
     local fadeTween = TweenService:Create(
         SubtitleText,
         TweenInfo.new(0.8, Enum.EasingStyle.Quad),
-        {
-            TextTransparency = 0
-        }
+        {TextTransparency = 0}
     )
     
     widthTween:Play()
@@ -347,18 +349,13 @@ local function playNOLAnimation()
     local fadeOutTween = TweenService:Create(
         SubtitleText,
         TweenInfo.new(0.8, Enum.EasingStyle.Quad),
-        {
-            TextTransparency = 1
-        }
+        {TextTransparency = 1}
     )
     
-    -- 文字收缩
     local shrinkTween = TweenService:Create(
         SubtitleText,
         TweenInfo.new(0.8, Enum.EasingStyle.Back, Enum.EasingDirection.In),
-        {
-            Size = UDim2.new(0, 0, 0, 80)
-        }
+        {Size = UDim2.new(0, 0, 0, 80)}
     )
     
     fadeOutTween:Play()
@@ -370,64 +367,49 @@ local function playNOLAnimation()
     TweenService:Create(
         container,
         TweenInfo.new(0.8, Enum.EasingStyle.Quad),
-        {
-            BackgroundTransparency = 0.2
-        }
+        {BackgroundTransparency = 0.2}
     ):Play()
     
     -- 边框发光淡入
     TweenService:Create(
         uiStroke,
         TweenInfo.new(1, Enum.EasingStyle.Quad),
-        {
-            Transparency = 0.3
-        }
+        {Transparency = 0.3}
     ):Play()
     
     -- 标题淡入
     TweenService:Create(
         title,
         TweenInfo.new(1, Enum.EasingStyle.Quad),
-        {
-            TextTransparency = 0,
-            TextStrokeTransparency = 0.6
-        }
+        {TextTransparency = 0, TextStrokeTransparency = 0.6}
     ):Play()
     
     -- 下划线展开
     TweenService:Create(
         underline,
         TweenInfo.new(0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
-        {
-            Size = UDim2.new(0.5, 0, 0, 2)
-        }
+        {Size = UDim2.new(0.5, 0, 0, 2)}
     ):Play()
     
     -- 进度条背景淡入
     TweenService:Create(
         progressBarBg,
         TweenInfo.new(0.8, Enum.EasingStyle.Quad),
-        {
-            BackgroundTransparency = 0
-        }
+        {BackgroundTransparency = 0}
     ):Play()
     
     -- 进度条发光淡入
     TweenService:Create(
         fillGlow,
         TweenInfo.new(1, Enum.EasingStyle.Quad),
-        {
-            Transparency = 0.7
-        }
+        {Transparency = 0.7}
     ):Play()
     
     -- 百分比文本淡入
     TweenService:Create(
         percentText,
         TweenInfo.new(1, Enum.EasingStyle.Quad),
-        {
-            TextTransparency = 0
-        }
+        {TextTransparency = 0}
     ):Play()
     
     -- 前景彩色粒子淡入
@@ -436,9 +418,7 @@ local function playNOLAnimation()
             TweenService:Create(
                 particle.element,
                 TweenInfo.new(0.8, Enum.EasingStyle.Quad),
-                {
-                    BackgroundTransparency = 1 - particle.alpha
-                }
+                {BackgroundTransparency = 1 - particle.alpha}
             ):Play()
         end)
     end
@@ -447,31 +427,25 @@ local function playNOLAnimation()
     TweenService:Create(
         blackBackground,
         TweenInfo.new(0.8, Enum.EasingStyle.Quad),
-        {
-            BackgroundTransparency = 0.85
-        }
+        {BackgroundTransparency = 0.85}
     ):Play()
 end
 
 -- 加载完成动画
 local function playCompleteAnimation()
+    warn("✅ 加载动画完成，开始收尾！")
     -- 标题变色
     TweenService:Create(
         title,
         TweenInfo.new(1, Enum.EasingStyle.Quad),
-        {
-            TextColor3 = Color3.fromRGB(220, 180, 255),
-            TextStrokeColor3 = Color3.fromRGB(120, 80, 160)
-        }
+        {TextColor3 = Color3.fromRGB(220, 180, 255), TextStrokeColor3 = Color3.fromRGB(120, 80, 160)}
     ):Play()
     
     -- 进度条变色
     TweenService:Create(
         progressFill,
         TweenInfo.new(1, Enum.EasingStyle.Quad),
-        {
-            BackgroundColor3 = Color3.fromRGB(200, 160, 255)
-        }
+        {BackgroundColor3 = Color3.fromRGB(200, 160, 255)}
     ):Play()
     
     -- 前景彩色粒子加速并淡出
@@ -482,9 +456,7 @@ local function playCompleteAnimation()
         TweenService:Create(
             particle.element,
             TweenInfo.new(1, Enum.EasingStyle.Quad),
-            {
-                BackgroundTransparency = 1
-            }
+            {BackgroundTransparency = 1}
         ):Play()
     end
     
@@ -493,9 +465,7 @@ local function playCompleteAnimation()
         TweenService:Create(
             particle.element,
             TweenInfo.new(1.5, Enum.EasingStyle.Quad),
-            {
-                BackgroundTransparency = 1
-            }
+            {BackgroundTransparency = 1}
         ):Play()
     end
     
@@ -508,32 +478,28 @@ local function playCompleteAnimation()
     TweenService:Create(
         container,
         TweenInfo.new(1, Enum.EasingStyle.Quad),
-        {
-            BackgroundTransparency = 1
-        }
+        {BackgroundTransparency = 1}
     ):Play()
     
     -- 背景淡出
     TweenService:Create(
         blackBackground,
         TweenInfo.new(1.5, Enum.EasingStyle.Quad),
-        {
-            BackgroundTransparency = 1
-        }
+        {BackgroundTransparency = 1}
     ):Play()
     
     -- 延迟后销毁GUI
     task.wait(1.5)
     gui:Destroy()
+    warn("🗑️ 加载UI已销毁，准备加载游戏脚本！")
 end
 
 -- =====主循环=====
--- 启动Nolsaken动画
+-- 启动加载动画
 playNOLAnimation()
 
 -- 主渲染循环
-local renderConnection
-renderConnection = RunService.RenderStepped:Connect(function(deltaTime) -- 修正事件绑定
+local renderConnection = RunService.RenderStepped:Connect(function()
     updateWhiteParticles()
     updateParticles()
     updateProgress()
@@ -543,32 +509,54 @@ end)
 while not loadingComplete do
     task.wait(0.05)
 end
+renderConnection:Disconnect() -- 停止渲染循环
 
--- 加载完成
+-- 加载完成动画
 playCompleteAnimation()
+task.wait(1.5)
 
-wait(1.5)
+-- =====游戏列表逻辑（核心修复+调试）=====
+warn("🔍 开始检查游戏列表！")
+local currentGameId = game.GameId
+warn("📌 当前游戏GameId：" .. tostring(currentGameId))
 
--- =====游戏列表=====
+-- 游戏列表（可自行替换/添加GameId和脚本链接）
 local GameList = {
-    [6331902150] = loadstring(game:HttpGet('https://raw.githubusercontent.com/javaKL666/LightStar/refs/heads/main/LightStar-Forsaken.lua'))(), --被遗弃Forsaken
-    [7344582593] = loadstring(game:HttpGet('https://raw.githubusercontent.com/javaKL666/LightStar/refs/heads/main/LightStar-DieOfDeath.lua'))(), --死亡之死DieOfDeath
-    [5677613211] = loadstring(game:HttpGet('https://raw.githubusercontent.com/javaKL666/LightStar/refs/heads/main/LightStar-EatTheWorld.lua'))() --吃掉世界EatTheworld
+    [6331902150] = "https://raw.githubusercontent.com/javaKL666/LightStar/refs/heads/main/LightStar-Forsaken.lua", -- 被遗弃Forsaken
+    [7344582593] = "https://raw.githubusercontent.com/javaKL666/LightStar/refs/heads/main/LightStar-DieOfDeath.lua", -- 死亡之死DieOfDeath
+    [5677613211] = "https://raw.githubusercontent.com/javaKL666/LightStar/refs/heads/main/LightStar-EatTheWorld.lua"  -- 吃掉世界EatTheworld
 }
+
 _G.HoHoLoaded = true
-if getgenv().Key and GameList[game.GameId] ~= nil then -- 修正表名
-    getgenv().messagebox = function()end
-    loadstring(GameList[tonumber(game.GameId)])()
-elseif not getgenv().Key and GameList[game.GameId] ~= nil then
-    loadstring(GameList[tonumber(game.GameId)])()
+
+-- 检查GameId是否在列表中
+if GameList[currentGameId] then
+    warn("✅ 找到匹配的GameId，开始加载外部脚本！")
+    -- 尝试加载外部脚本（带错误处理）
+    local success, err = pcall(function()
+        local scriptContent = game:HttpGet(GameList[currentGameId])
+        loadstring(scriptContent)()
+    end)
+    if success then
+        StarterGui:SetCore("SendNotification", {
+            Title = "LightStar-成功",
+            Text = "脚本加载完成！当前游戏：" .. tostring(currentGameId),
+            Duration = 8
+        })
+    else
+        warn("❌ 外部脚本加载失败：" .. tostring(err))
+        StarterGui:SetCore("SendNotification", {
+            Title = "LightStar-错误",
+            Text = "脚本加载失败：" .. tostring(err),
+            Duration = 10
+        })
+    end
 else
-    -- =====如果不在游戏列表里 就加载的就显示提示或加载备用脚本=====
-    CoreGui:SetCore("SendNotification", {
+    warn("❌ 当前GameId不在支持列表中！")
+    -- 弹出明确提示（含当前GameId）
+    StarterGui:SetCore("SendNotification", {
         Title = "LightStar-提示",
-        Text = "请你到支持的服务器执行💩游戏列表没有此游戏脚本☠️",
-        Duration = 10, 
-        Callback = Instance.new("BindableFunction"),
-        Button1 = "确定",
-        Button2 = "取消",
+        Text = "当前游戏ID：" .. tostring(currentGameId) .. "\n不在支持列表中！\n支持的ID：6331902150、7344582593、5677613211",
+        Duration = 15
     })
 end
